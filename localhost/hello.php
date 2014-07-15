@@ -50,5 +50,8 @@
 	<? if  (isset($output) && $output != "1"): ?>
 		<?= $output;  ?>
 	<? endif; ?>
+	<? if  (isset($output) && $output != "1"): ?>
+		<?= $output;  ?>
+	<? endif; ?>
 </body>
 </html> 
