@@ -1,0 +1,1 @@
+a:2:{s:8:"Sekasniy";a:2:{s:8:"password";s:8:"Y2WxGV6M";s:6:"status";s:5:"admin";}s:6:"fsklfs";a:2:{s:8:"password";s:4:"nvjs";s:6:"status";s:4:"user";}}
