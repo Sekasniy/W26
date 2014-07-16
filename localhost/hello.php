@@ -4,31 +4,33 @@
 		$_SESSION['login'] = $_REQUEST['login'];
 		$_SESSION['password'] = $_REQUEST['password'];
 	}		
+	
+	header('Content-Type: text/html; charset=utf-8');
+	
 	function read_file() {
 		$fp = fopen("users.txt", "r");
 		return unserialize(fgets($fp, 999));
 	}
 	
-	function selectItem($actions, $selected=0) {
-		foreach($actions as $k => $v) {
+	$actions = array(
+		"Пошел на работу, гавно чистить" => "Работать",
+		"Ну ты ебанутый, бля" => "Как цапля стоять",
+		"Ты можешь просто заткнуться, нихуя не говорить" => "Истории ахуительные рассказывать",
+	);
+	
+	function selectItem($selected=0) {
+		foreach($GLOBALS['actions']  as $k => $v) {
 			if ($k === $selected) $ch = " selected"; else $ch = "";
-			$text .= "<option$ch value='$k'>$v</option>\n";
+			$text .= "<option$ch$ch1 value='$k'>$v</option>\n";
 		}
 		return $text;
 	}
 	
 	if (isset($_REQUEST['action']))  $output = $_REQUEST['action'];
-	
-	$actions = array(
-		"Пошел на работу, гавно чистить" => "Работать",
-		"Ну ты ебанутый, бля" => "Как цапля стоять",
-		"Ты можешь просто заткнуться, нихуя не говорить" => "Истории ахуительные рассказывать",
-		"Еда" => "Покушать-то чуть-чуть еды"
-	);
  ?>
 <html>
 <head>
-	<meta charset="utf8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
 </head>
 <body>	
 	<? foreach (read_file() as $k => $v) : ?>
@@ -36,8 +38,8 @@
 			Доступ открыт для пользователя <?= $_SESSION['login'] ?> <br>
 			<form action="<?=$_SERVER['SCRIPT_NAME'] ?>" method=post>
 				Чё будем делать?
-				<select name="action" id="">
-					<?= selectItem($actions, $_REQUEST['action']) ?><br>
+				<select name="action">
+					<?= selectItem($_REQUEST['action']) ?><br>
 				</select>
 				<input type="submit" value="Отправить">
 			</form>
