@@ -16,6 +16,7 @@
 		"Пошел на работу, гавно чистить" => "Работать",
 		"Ну ты ебанутый, бля" => "Как цапля стоять",
 		"Ты можешь просто заткнуться, нихуя не говорить" => "Истории ахуительные рассказывать",
+		"F" => "Факториал считать"
 	);
 	
 	function selectItem($selected=0) {
@@ -27,7 +28,12 @@
 	}
 	
 	if (isset($_REQUEST['action']))  $output = $_REQUEST['action'];
- ?>
+	
+	function factor($n=0) {
+		if ($n == 0) return 1;
+		else return $n * fact($n - 1);
+	}
+  ?>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
@@ -48,9 +54,12 @@
 			Доступ закрыт.
 			<? break; ?>
 		<? endif; ?>
-	<? endforeach; ?>	
-	<? if  (isset($output) && $output != "1"): ?>
-		<?= $output;  ?>
+	<? endforeach; ?>
+	<? if (isset($output)) : ?>
+		<? if  ($output != "F"): ?>
+			<?= $output;  ?>
+		<? endif ?>
 	<? endif; ?>
+	<a href="factorial.php">Браток, ну хочешь я тебе факториал посчитаю?</a>
 </body>
 </html> 
