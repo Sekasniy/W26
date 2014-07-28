@@ -60,6 +60,9 @@
 			<?= $output;  ?>
 		<? endif ?>
 	<? endif; ?>
+	<br />
+	<br />
+	<br />
 	<a href="factorial.php">Браток, ну хочешь я тебе факториал посчитаю?</a>
 </body>
 </html> 
