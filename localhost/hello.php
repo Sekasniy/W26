@@ -3,6 +3,7 @@
 	if(isset($_REQUEST['login']) and isset($_REQUEST['password'])) {
 		$_SESSION['login'] = $_REQUEST['login'];
 		$_SESSION['password'] = $_REQUEST['password'];
+		$_SESSION['sel_actions'] = array();
 	}		
 	
 	header('Content-Type: text/html; charset=utf-8');
@@ -12,14 +13,14 @@
 		return unserialize(fgets($fp, 999));
 	}
 	
-	$actions = array(
+	$actions = [
 		"Пошел на работу, гавно чистить" => "Работать",
 		"Ну ты ебанутый, бля" => "Как цапля стоять",
 		"Ты можешь просто заткнуться, нихуя не говорить" => "Истории ахуительные рассказывать",
-		"F" => "Факториал считать"
-	);
+	];
 	
-	function selectItem($selected=0) {
+	function selectItem($selected) {
+		if ($selected !== null) $_SESSION['sel_actions'][] = $actions[$selected];
 		foreach($GLOBALS['actions']  as $k => $v) {
 			if ($k === $selected) $ch = " selected"; else $ch = "";
 			$text .= "<option$ch$ch1 value='$k'>$v</option>\n";
@@ -27,25 +28,24 @@
 		return $text;
 	}
 	
-	if (isset($_REQUEST['action']))  $output = $_REQUEST['action'];
+	$F = "selectItem";
 	
-	function factor($n=0) {
-		if ($n == 0) return 1;
-		else return $n * fact($n - 1);
-	}
+	if (isset($_REQUEST['action']))  $output = $_REQUEST['action'];
+
   ?>
-<html>
+<html>	 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8">
 </head>
 <body>	
 	<? foreach (read_file() as $k => $v) : ?>
 		<? if ($_SESSION["login"] ==$k && $_SESSION["password"]== $v['password']): ?>
-			Доступ открыт для пользователя <?= $_SESSION['login'] ?> <br>
+			Доступ открыт для пользователя <?= $_SESSION['login'] ?>
+			<a href="factorial.php" style="float:right; position: relative">Браток, ну хочешь я тебе факториал посчитаю?</a><br>
 			<form action="<?=$_SERVER['SCRIPT_NAME'] ?>" method=post>
 				Чё будем делать?
 				<select name="action">
-					<?= selectItem($_REQUEST['action']) ?><br>
+					<?= call_user_func($F, $_REQUEST['action']) ?><br>
 				</select>
 				<input type="submit" value="Отправить">
 			</form>
@@ -56,13 +56,8 @@
 		<? endif; ?>
 	<? endforeach; ?>
 	<? if (isset($output)) : ?>
-		<? if  ($output != "F"): ?>
 			<?= $output;  ?>
-		<? endif ?>
-	<? endif; ?>
-	<br />
-	<br />
-	<br />
-	<a href="factorial.php">Браток, ну хочешь я тебе факториал посчитаю?</a>
+			<form action="output.php"><input type="submit" value="Вывести"></form> 
+	<? endif ?>
 </body>
 </html> 
